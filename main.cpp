@@ -40,8 +40,7 @@ int main(int argc, char** argv) {
     sid.add("apple",1);
     sid.add("pear",5);
     sid.add("banana",6);
-    //printf("sid end is %sequal to sid begin\r\n",sid.begin()!=sid.end()?"not ":"");
-    //return 0;
+    
     printf("size() = %d\r\n",(int)sid.size());
     
     printf("sid.item(\"banana\") = %d\r\n",*sid.item("banana"));
