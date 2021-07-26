@@ -222,63 +222,7 @@ namespace algo {
         using key_type = KeyType;
         using value_type = ValueType;
         using entry_type = key_value_pair<KeyType,ValueType>;
-        constexpr static const size_t minimum_buckets = 1;
-        class enumerator {
-            using buckets_type = linked_list<entry_type>;
-            friend class linked_dictionary;
-            linked_dictionary* m_parent;
-            size_t m_index;
-            typename buckets_type::enumerator m_bucket_it;
-        public:
-            inline entry_type operator*() {
-                if(is_end()) {
-                    return entry_type();
-                }
-                return *m_bucket_it;
-            }
-            inline bool is_end() const {
-                return m_bucket_it==m_parent->m_buckets[0].end();
-            }
-            inline enumerator& operator++() {
-                if(m_index<m_parent->m_buckets_size) {
-                    auto it = ++m_bucket_it;
-                    
-                    if(it==m_parent->m_buckets[m_index].end()) {
-                        while(++m_index<m_parent->m_buckets_size && 0==m_parent->m_buckets[m_index].size()); 
-                        if(m_index<=m_parent->m_buckets_size) {
-                            m_bucket_it = m_parent->m_buckets[m_index].begin();
-                        } else  {
-                            m_index = 0;
-                            m_bucket_it=m_parent->m_buckets[0].end();
-                        }
-                    }
-                } else { 
-                    m_bucket_it=m_parent->m_buckets[0].end();
-                    m_index=0;
-                }
-                return *this;
-            }
-            inline enumerator operator++(int) {
-                enumerator result;
-                result->m_parent = m_parent;
-                result->m_index = m_index;
-                result->m_bucket_it = m_bucket_it;
-                ++*this;
-                return result;
-            }
-            inline bool operator==(const enumerator &rhs) const {
-                return m_bucket_it == rhs.m_bucket_it;
-            }
-            inline bool operator!=(const enumerator &rhs) const {
-                return m_bucket_it != rhs.m_bucket_it;
-            }
-            inline bool operator==(const enumerator &rhs) {
-                return m_bucket_it == rhs.m_bucket_it;
-            }
-            inline bool operator!=(const enumerator &rhs) {
-                return m_bucket_it != rhs.m_bucket_it;
-            }
-        };
+        constexpr static const size_t minimum_buckets = 7;
     private:
         using buckets_type = linked_list<entry_type>;
         size_t m_size;
@@ -408,31 +352,6 @@ namespace algo {
                 p->clear();
                 ++p;
             }
-        }
-        enumerator begin() {
-            enumerator result;
-            if(0!=m_buckets_size) {
-                result.m_parent = this;
-                result.m_index = 0;
-                if(0!=m_size) {
-                    buckets_type* p = m_buckets;
-                    while(0==p->size()) {
-                        ++p;
-                        ++result.m_index;
-                    }
-                    result.m_bucket_it = p->begin();
-                }
-            }
-            return result;
-        }
-        enumerator end() {
-            enumerator result;
-            result.m_parent = this;
-            result.m_index = 0;    
-            if(0!=m_buckets_size) {
-                result.m_bucket_it=m_buckets[0].end();
-            }
-            return result;
         }
         void deinit() {
             clear();

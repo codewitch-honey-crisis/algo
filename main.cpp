@@ -33,24 +33,24 @@ void demo_linked_dictionary() {
 }
 
 int main(int argc, char** argv) {
-    
+    static const size_t buckets=53;
     using string_int_dictionary = linked_dictionary<const char*,int,string_hash,string_compare>;
     
-    string_int_dictionary sid(1);
+    string_int_dictionary sid(buckets);
     sid.add("apple",1);
     sid.add("pear",5);
     sid.add("banana",6);
     //printf("sid end is %sequal to sid begin\r\n",sid.begin()!=sid.end()?"not ":"");
     //return 0;
     printf("size() = %d\r\n",(int)sid.size());
-    int* pi = sid.item("apple");
-    printf("sid.item(\"apple\") = %d\r\n",pi!=nullptr?*pi:-1);
+    
+    printf("sid.item(\"banana\") = %d\r\n",*sid.item("banana"));
+    printf("sid.item(\"pear\") = %d\r\n",*sid.item("pear"));
+    printf("sid.item(\"apple\") = %d\r\n",*sid.item("apple"));
     printf("\r\n");
-
-    for(auto it = sid.begin();it!=sid.end();++it) {
-        printf("item = (%s, %d)\r\n",(*it).key,(*it).value);
-    }
-    printf("\r\n");
+    printf("string_hash(\"pear\") % buckets = %llu\r\n",(unsigned long long)string_hash("pear")%buckets);
+    printf("string_hash(\"apple\") % buckets = %llu\r\n",(unsigned long long)string_hash("apple")%buckets);
+    printf("string_hash(\"banana\") % buckets = %llu\r\n",(unsigned long long)string_hash("banana")%buckets);
 
     return 0;
 }
