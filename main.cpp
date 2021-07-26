@@ -29,10 +29,6 @@ void demo_linked_list() {
     
 }
 void demo_linked_dictionary() {
-
-}
-
-int main(int argc, char** argv) {
     static const size_t buckets=53;
     using string_int_dictionary = linked_dictionary<const char*,int,string_hash,string_compare>;
     
@@ -41,15 +37,24 @@ int main(int argc, char** argv) {
     sid.add("pear",5);
     sid.add("banana",6);
     
-    printf("size() = %d\r\n",(int)sid.size());
-    
+    printf("sid.size() = %d\r\n",(int)sid.size());
+    // item() can return null, so watch out.
+    // however, we know these items exist because
+    // we just added them so we don't need to 
+    // check:
     printf("sid.item(\"banana\") = %d\r\n",*sid.item("banana"));
     printf("sid.item(\"pear\") = %d\r\n",*sid.item("pear"));
     printf("sid.item(\"apple\") = %d\r\n",*sid.item("apple"));
     printf("\r\n");
-    printf("string_hash(\"pear\") % buckets = %llu\r\n",(unsigned long long)string_hash("pear")%buckets);
-    printf("string_hash(\"apple\") % buckets = %llu\r\n",(unsigned long long)string_hash("apple")%buckets);
-    printf("string_hash(\"banana\") % buckets = %llu\r\n",(unsigned long long)string_hash("banana")%buckets);
+    printf("string_hash(\"pear\") %% buckets = %llu\r\n",(unsigned long long)string_hash("pear")%buckets);
+    printf("string_hash(\"apple\") %% buckets = %llu\r\n",(unsigned long long)string_hash("apple")%buckets);
+    printf("string_hash(\"banana\") %% buckets = %llu\r\n",(unsigned long long)string_hash("banana")%buckets);
 
+
+}
+
+int main(int argc, char** argv) {
+    demo_linked_list();
+    demo_linked_dictionary();
     return 0;
 }
